@@ -2,7 +2,7 @@
 
 ### Overview
 
-This project demonstrates setting up a simple CI/CD pipeline for a Node.js Express application. The pipeline builds a Docker image of the application, pushes it to Docker Hub, and then deploys it to a remote EC2 server using Docker Compose.
+This project demonstrates setting up a simple CI/CD pipeline for a NodeJs application. The pipeline builds a Docker image of the application, pushes it to Docker Hub, and then deploys it to a remote EC2 server using Docker Compose.
 
 ### Repository Structure
 
