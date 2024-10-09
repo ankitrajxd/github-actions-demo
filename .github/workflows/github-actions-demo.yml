@@ -44,6 +44,5 @@ jobs:
         run: |
           ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << EOF
             docker pull ankitrajxd/simple-node-app:${{ env.COMMIT_SHA }}
-            docker stop $(docker ps -q --filter ancestor=ankitrajxd/simple-node-app)
             docker run -d -p 3000:3000 ankitrajxd/simple-node-app:${{ env.COMMIT_SHA }}
           EOF
