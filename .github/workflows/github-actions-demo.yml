@@ -57,5 +57,10 @@ jobs:
             docker stop $CONTAINER_ID
             docker rm $CONTAINER_ID
           fi
+          PORT_CONTAINER_ID=$(docker ps -q --filter "publish=3000")
+          if [ ! -z "$PORT_CONTAINER_ID" ]; then
+            docker stop $PORT_CONTAINER_ID
+            docker rm $PORT_CONTAINER_ID
+          fi
           docker run -d -p 3000:3000 ankitrajxd/simple-node-app:${{ needs.build.outputs.commit_sha }}
           EOF
