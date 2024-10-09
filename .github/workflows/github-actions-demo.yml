@@ -50,7 +50,7 @@ jobs:
 
       - name: Copy compose.yaml to EC2
         run: |
-          scp -i ~/.ssh/id_rsa compose.yaml ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/gha-deploy
+          scp -i ~/.ssh/id_rsa ./compose.yaml ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/gha-deploy
 
       - name: SSH into EC2 and Deploy
         run: |
