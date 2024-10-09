@@ -51,16 +51,11 @@ jobs:
       - name: SSH into EC2 and Deploy
         run: |
           ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << EOF
+
+          docker ps -q --filter "ancestor=ankitrajxd/simple-node-app:${{ needs.build.outputs.commit_sha }}" | grep -q . && docker stop $(docker ps -q --filter "ancestor=ankitrajxd/simple-node-app:${{ needs.build.outputs.commit_sha }}")
+          docker ps -a -q --filter "ancestor=ankitrajxd/simple-node-app:${{ needs.build.outputs.commit_sha }}" | grep -q . && docker rm $(docker ps -a -q --filter "ancestor=ankitrajxd/simple-node-app:${{ needs.build.outputs.commit_sha }}")
+
           docker pull ankitrajxd/simple-node-app:${{ needs.build.outputs.commit_sha }}
-          CONTAINER_ID=$(docker ps -q --filter "ancestor=ankitrajxd/simple-node-app" --filter "status=running")
-          if [ ! -z "$CONTAINER_ID" ]; then
-            docker stop $CONTAINER_ID
-            docker rm $CONTAINER_ID
-          fi
-          PORT_CONTAINER_ID=$(docker ps -q --filter "publish=3000")
-          if [ ! -z "$PORT_CONTAINER_ID" ]; then
-            docker stop $PORT_CONTAINER_ID
-            docker rm $PORT_CONTAINER_ID
-          fi
+
           docker run -d -p 3000:3000 ankitrajxd/simple-node-app:${{ needs.build.outputs.commit_sha }}
           EOF
