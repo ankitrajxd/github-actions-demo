@@ -8,8 +8,24 @@ on:
       - 'readme.md'
 
 jobs:
+
+  test: 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+
   build:
     runs-on: ubuntu-latest
+    needs: test
 
     steps:
       - name: Checkout code
@@ -35,6 +51,8 @@ jobs:
     outputs:
       commit_sha: ${{ steps.set-output.outputs.commit_sha }}
 
+
+      
   deploy:
     runs-on: ubuntu-latest
     needs: build
