@@ -52,13 +52,15 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
+    permissions: 
+      contents: write
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           repository: ankitrajxd/node-app-manifests
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT }}
 
       - name: Configure git
         run: |
@@ -67,7 +69,7 @@ jobs:
 
       - name: Update the deployment manifest and Commit
         env:
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TOKEN: ${{ secrets.PAT }}
         run: |
           sed -i 's|image: ankitrajxd/simple-node-app:.*|image: ankitrajxd/simple-node-app:${{ needs.build.outputs.commit_sha }}|' nodeapp.yaml
           git commit -am "Update deployment image to ankitrajxd/simple-node-app:${{ needs.build.outputs.commit_sha }}"
