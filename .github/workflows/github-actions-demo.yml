@@ -60,11 +60,16 @@ jobs:
           repository: ankitrajxd/node-app-manifests
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Update the deployment manifest and Commit
+      - name: Configure git
         run: |
-          git config --global user.email "ankitrajxd@gmail.com"
-          git config --global user.name "Ankit"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      - name: Update the deployment manifest and Commit
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
           sed -i 's|image: ankitrajxd/simple-node-app:.*|image: ankitrajxd/simple-node-app:${{ needs.build.outputs.commit_sha }}|' nodeapp.yaml
           git commit -am "Update deployment image to ankitrajxd/simple-node-app:${{ needs.build.outputs.commit_sha }}"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/ankitrajxd/node-app-manifests.git main
+          git remote set-url origin https://x-access-token:${TOKEN}@github.com/ankitrajxd/node-app-manifests.git
+          git push origin main
