@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 
 app.get('/', (req, res) => {
-    res.send('Updated Hello, World! from container!❤️');
+    res.send('Updated Hello, World! from pod!❤️');
 });
 
 app.listen(3000, () => {
