@@ -69,9 +69,10 @@ jobs:
       - name: Update the deployment manifest and Commit
         run: |
           git config --global user.email "ankitrajxd@gmail.com"
-          git config --global user.name "GitHub Actions"
+          git config --global user.name "Ankit"
 
           sed -i 's|image: ankitrajxd/simple-node-app:.*|image: ankitrajxd/simple-node-app:${{ needs.build.outputs.commit_sha }}|' nodeapp.yaml
           git commit -am "Update deployment image to ankitrajxd/simple-node-app:${{ needs.build.outputs.commit_sha }}"
-          git push origin main
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/ankitrajxd/node-app-manifests.git main
+
 
