@@ -62,7 +62,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          repository: ankitrajxd/node-app-manifests.git
+          repository: ankitrajxd/node-app-manifests
           token: ${{ secrets.GITHUB_TOKEN }}
 
           
