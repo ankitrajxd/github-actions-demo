@@ -60,33 +60,18 @@ jobs:
     steps:
 
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+        with:
+          repository: ankitrajxd/node-app-manifests.git
+          token: ${{ secrets.GITHUB_TOKEN }}
+
           
-      - name: Set up SSH config
+      - name: Update the deployment manifest and Commit
         run: |
-          mkdir -p ~/.ssh
-          echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+          git config --global user.email "ankitrajxd@gmail.com"
+          git config --global user.name "GitHub Actions"
 
-      - name: Copy SSH key
-        run: |
-          echo "${{ secrets.EC2_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
-      - name: List files in the working directory
-        run: ls
-
-      - name: Copy compose.yaml to EC2
-        run: |
-          scp -i ~/.ssh/id_rsa ./compose.yaml ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/gha-deploy
-
-      - name: SSH into EC2 and Deploy
-        run: |
-          ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << EOF
-
-          export REPO_NAME=ankitrajxd/simple-node-app
-          export TAG=${{ needs.build.outputs.commit_sha }}
-
-          cd /home/gha-deploy && docker-compose up -d
-
-          EOF
+          sed -i 's|image: ankitrajxd/simple-node-app:.*|image: ankitrajxd/simple-node-app:${{ needs.build.outputs.commit_sha }}|' nodeapp.yaml
+          git commit -am "Update deployment image to ankitrajxd/simple-node-app:${{ needs.build.outputs.commit_sha }}"
+          git push origin main
 
