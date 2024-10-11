@@ -109,6 +109,12 @@ services:
 
 The CI/CD pipeline is defined in the `github-actions-demo.yml` file. The pipeline consists of the following steps:
 
+
+#### Workflow
+<img src="./public/workflow.png" alt="workflow" style="border-radius: 5px;" />
+
+
+
 #### Build Job
 1. **Checkout code**: Uses actions/checkout@v2 to checkout the repository.
 2. **Get commit SHA**: Extracts the commit SHA.
